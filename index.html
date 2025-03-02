@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Football Match</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #0b3d91;
+            color: white;
+        }
+        .scoreboard {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        .team {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .score {
+            font-size: 60px;
+            font-weight: bold;
+        }
+        .timer {
+            font-size: 30px;
+            margin: 20px;
+        }
+        button {
+            font-size: 20px;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #ffcc00;
+            color: black;
+        }
+        button:hover {
+            background: #ffaa00;
+        }
+        .stats {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Live Football Match</h1>
+    <h2 id="match">Team A vs Team B</h2>
+    
+    <div class="scoreboard">
+        <div class="team">
+            <h3>Team A</h3>
+            <div class="score" id="scoreA">0</div>
+            <button onclick="increaseScore('A')">Goal for Team A</button>
+            <button onclick="increaseOffside('A')">Offside for Team A</button>
+            <button onclick="increaseCorner('A')">Corner for Team A</button>
+        </div>
+        
+        <div class="timer" id="timer">00:00</div>
+        
+        <div class="team">
+            <h3>Team B</h3>
+            <div class="score" id="scoreB">0</div>
+            <button onclick="increaseScore('B')">Goal for Team B</button>
+            <button onclick="increaseOffside('B')">Offside for Team B</button>
+            <button onclick="increaseCorner('B')">Corner for Team B</button>
+        </div>
+    </div>
+    
+    <div class="stats">
+        <h3>Match Stats</h3>
+        <p>Offsides: <span id="offsideA">0</span> - <span id="offsideB">0</span></p>
+        <p>Corners: <span id="cornerA">0</span> - <span id="cornerB">0</span></p>
+    </div>
+    
+    <audio id="goalSound" ></audio>
+    
+    <script>
+        let scoreA = 0, scoreB = 0;
+        let offsideA = 0, offsideB = 0;
+        let cornerA = 0, cornerB = 0;
+        let minutes = 0, seconds = 0;
+        let matchTimer;
+        
+        function increaseScore(team) {
+            document.getElementById('goalSound').play();
+            if (team === 'A') {
+                scoreA++;
+                document.getElementById('scoreA').innerText = scoreA;
+            } else {
+                scoreB++;
+                document.getElementById('scoreB').innerText = scoreB;
+            }
+        }
+        
+        function increaseOffside(team) {
+            if (team === 'A') {
+                offsideA++;
+                document.getElementById('offsideA').innerText = offsideA;
+            } else {
+                offsideB++;
+                document.getElementById('offsideB').innerText = offsideB;
+            }
+        }
+        
+        function increaseCorner(team) {
+            if (team === 'A') {
+                cornerA++;
+                document.getElementById('cornerA').innerText = cornerA;
+            } else {
+                cornerB++;
+                document.getElementById('cornerB').innerText = cornerB;
+            }
+        }
+        
+        function startMatchTimer() {
+            matchTimer = setInterval(() => {
+                seconds++;
+                if (seconds === 60) {
+                    seconds = 0;
+                    minutes++;
+                }
+                document.getElementById('timer').innerText = 
+                    (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+            }, 1000);
+        }
+        
+        startMatchTimer();
+    </script>
+</body>
+</html>
